@@ -30,16 +30,20 @@ developer_turnover = function(database_host, working_dir, web_working_dir = work
   S0[["https://github.com/ansible/ansible.git"]] = "6221a2740f5c3023c817d13e4a564f301ed3bc73"
   S0[["https://github.com/angular/angular.js.git"]] = "519bef4f3d1cdac497c782f77457fd2f67184601"
 
-  cat("loading from database... ")
+  dir.create(working_dir, showWarnings =F)
+  dir.create(web_working_dir, showWarnings =F)
+
+
+  cat("loading from database... "); flush.console()
   load_developers_activity()
-  print(" DONE")
-  cat("plotting turnover evolution... ")
+  cat(" DONE\n"); flush.console()
+  cat("plotting turnover evolution... "); flush.console()
   plot_turnover_evolution()
-  print("DONE")
-  cat("plotting period selection results... ")
+  cat("DONE\n"); flush.console()
+  cat("plotting period selection results... "); flush.console()
   plot_dev_sets_comparison()
-  print("DONE")
-  cat("computing metrics and correlation with quality... ")
+  cat("DONE\n"); flush.console()
+  cat("computing metrics and correlation with quality... "); flush.console()
   compute_correlations()
-  print("DONE")
+  cat("DONE\n"); flush.console()
 }

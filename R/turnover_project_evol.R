@@ -29,7 +29,7 @@ plot_turnover_evolution = function() {
 
       name_p = projects_names[[commit_dates_proj$project[1]]]
 
-      cairo_pdf(paste0(working_dir, "evol-",name_p,".pdf"),width=5, height=5)
+      cairo_pdf(paste0(working_dir, "/evol-",name_p,".pdf"),width=5, height=5)
       par(mar=c(2,2,2,1), cex =1.5)
       lw = 5
       plot(evol$time, evol$tot,

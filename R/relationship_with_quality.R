@@ -1,30 +1,11 @@
 
-# Writes a correlation result in the LateX format
-stringify.cor = function(cor.result, html = F) {
-  if (is.na(cor.result$estimate))
-    return ("0.00")
-  s = as.numeric(round(cor.result$estimate, 2))
-  if (cor.result$p.value < 0.001 ) {
-    s = paste(s, "***")
-  } else if (cor.result$p.value < 0.01 ) {
-    s = paste(s, "**")
-  } else if (cor.result$p.value < 0.05 ) {
-    s = paste(s, "*")
-  } else if (cor.result$p.value < 0.1 ) {
-    s = paste(s, ".")
-  }
+cor.string = function(x, y) {
+  library(boot)
 
-  if (cor.result$p.value < 0.1) {
-    if (html)
-      s = paste0("<b>", s, "</b>")
-    else
-      s = paste0("\\textbf{", s, "}")
-  }
-  return(s)
-}
+  bootresult = boot(data.frame(x=x,y=y), function(df, idx) {with(df[idx,], cor.test(x,y, method="spearman")$estimate)}, R = 1000)
+  ci = boot.ci(bootresult, type="bca")
 
-cor.string = function(x, y, html=F) {
-  stringify.cor(cor.test(x,y, method="spearman") , html)
+  s = paste0("[", as.numeric(round(ci$bca[4],2)), " , ", as.numeric(round(ci$bca[5],2)) , "]")
 }
 
 compute_correlations = function() {
@@ -43,7 +24,7 @@ compute_correlations = function() {
   mnames = c("INA","ILA","ENA","ELA","SA", "A")
   compute_cor = function(metr, html=F) {
     do.call(rbind, by(metr, metr$project, function(metrics_p) {
-      c(dt_env$projects_names[[metrics_p$project[1]]],lapply(metrics_p[,mnames], function(x){cor.string(metrics_p$BugDensity, x, html)}))
+      c(dt_env$projects_names[[metrics_p$project[1]]],lapply(metrics_p[,mnames], function(x){cor.string(metrics_p$BugDensity, x)}))
     }))
   }
 

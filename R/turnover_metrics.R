@@ -45,7 +45,7 @@ developer_sets = function(contribs_mod_before, contribs_mod_after, contribs_proj
        IN = int_newcomers,
        EL = ext_leavers,
        IL = int_leavers,
-       S = stayers)
+       St = stayers)
 }
 
 turnover_metrics = function(contribs_mod_before, contribs_mod_after, contribs_proj_before, contribs_proj_after, module) {
@@ -59,13 +59,13 @@ turnover_metrics = function(contribs_mod_before, contribs_mod_after, contribs_pr
   ndev_after = ndev(contribs_mod_after)
 
   res = data.frame(module=module, project=contribs_proj_before$project[1],
-    NumDevsAfter = ndev_after,
-    NumDevsBefore = ndev_before,
-    NumDevsMean = mean(c(ndev_before,ndev_after)),
-    EN = ndev(sets$EN),
-    EL = ndev(sets$EL),
-    IN = ndev(sets$IN),
-    IL = ndev(sets$IL),
+#     NumDevsAfter = ndev_after,
+#     NumDevsBefore = ndev_before,
+#     NumDevsMean = mean(c(ndev_before,ndev_after)),
+#     EN = ndev(sets$EN),
+#     EL = ndev(sets$EL),
+#     IN = ndev(sets$IN),
+#     IL = ndev(sets$IL),
 #     LR = ndev(sets$L)/ndev_before,
 #     ILR = ndev(sets$IL)/ndev_before,
 #     ELR = ndev(sets$EL)/ndev_before,
@@ -78,18 +78,18 @@ turnover_metrics = function(contribs_mod_before, contribs_mod_after, contribs_pr
 #     NO = sum(sets$N$ownModuleChurn),
 #     INO = sum(sets$IN$ownModuleChurn),
 #     ENO = sum(sets$EN$ownModuleChurn),
-    S = ndev(sets$S),
-#     SR = ndev(sets$S)/mean(c(ndev_before,ndev_after)),
-#     SO = sum(rowMeans(sets$S[,c("ownModuleChurn.a","ownModuleChurn.b")])),
+#     St = ndev(sets$St),
+#     StR = ndev(sets$St)/mean(c(ndev_before,ndev_after)),
+#     StO = sum(rowMeans(sets$St[,c("ownModuleChurn.a","ownModuleChurn.b")])),
     ENA = sum(sets$EN$churn),
     ELA = sum(sets$EL$churn),
     INA = sum(sets$IN$churn),
     ILA = sum(sets$IL$churn),
-    SA = sum(rowMeans(sets$S[,c("churn.after","churn.before")]))
+    StA = sum(rowMeans(sets$S[,c("churn.after","churn.before")]))
   )
 
   res[is.nan(res)] = 0
-  res$A = rowSums(res[,c("ENA", "INA","ILA","ELA", "SA")])
+  res$A = rowSums(res[,c("ENA", "INA","ILA","ELA", "StA")])
 
 
   res

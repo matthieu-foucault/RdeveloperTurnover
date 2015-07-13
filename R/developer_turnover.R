@@ -1,6 +1,6 @@
 
 dt_env = new.env()
-developer_turnover = function(database_host, working_dir, web_working_dir = working_dir) {
+developer_turnover = function(database_host, database_name, working_dir, web_working_dir = working_dir) {
   library(reshape2)
   library(ggplot2)
   library(gplots)
@@ -11,6 +11,7 @@ developer_turnover = function(database_host, working_dir, web_working_dir = work
   library(htmlTable)
 
   dt_env$database_host = database_host
+  dt_env$database_name = database_name
   dt_env$working_dir = working_dir
   dt_env$web_working_dir = web_working_dir
 

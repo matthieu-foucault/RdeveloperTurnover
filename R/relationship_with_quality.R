@@ -20,11 +20,14 @@ compute_correlations = function() {
   metrics_1m = merge(dt_env$mod_m, compute_metrics(1), by = c("module","project"), all=F)
   metrics_3m = merge(dt_env$mod_m, compute_metrics(3), by = c("module","project"), all=F)
   metrics_6m = merge(dt_env$mod_m, compute_metrics(6), by = c("module","project"), all=F)
+  dt_env$metrics = metrics_6m
 
-  mnames = c("INA","ILA","ENA","ELA","SA", "A")
+  mnames = c("INA","ILA","ENA","ELA","StA", "A")
   compute_cor = function(metr, html=F) {
     do.call(rbind, by(metr, metr$project, function(metrics_p) {
-      c(dt_env$projects_names[[metrics_p$project[1]]],lapply(metrics_p[,mnames], function(x){cor.string(metrics_p$BugDensity, x)}))
+      c(dt_env$projects_names[[metrics_p$project[1]]],lapply(metrics_p[,mnames], function(x){
+        cor.string(metrics_p$BugDensity, x)
+        }))
     }))
   }
 
@@ -46,7 +49,7 @@ compute_correlations = function() {
   dir.create(paste0(dt_env$working_dir,"/patterns"), showWarnings =F)
   by(metrics_6m, metrics_6m$project, function(metrics_p) {
     name_p = dt_env$projects_names[[metrics_p$project[1]]]
-    a = metrics_p[,c("A", "INA", "ENA", "ILA", "ELA", "SA", "BugFixes")]
+    a = metrics_p[,c("A", "INA", "ENA", "ILA", "ELA", "StA", "BugFixes")]
     rownames(a) = metrics_p$module
     a = a[order(a$BugFixes),]
     colnames(a)[1] = "Total A"

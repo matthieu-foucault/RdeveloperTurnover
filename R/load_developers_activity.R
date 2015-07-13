@@ -14,11 +14,10 @@ load_developers_activity = function() {
 
     Sys.setlocale("LC_TIME", "English")
 
-    db = "developers_activity"
     url = paste0("mongodb://", database_host)
 
     #act_months_after = dbGetQuery(mongo, "developer_activity_months_after", "", skip=0, limit=0)
-    act_months_after = mongo("developer_activity_months_after", db, url, F)$find()
+    act_months_after = mongo("developer_activity_months_after", database_name, url, F)$find()
     act_months_after$releaseDate = as.Date(act_months_after$releaseDate)
     act_months_after$X_id = NULL
     dt_env$act_months_after = act_months_after

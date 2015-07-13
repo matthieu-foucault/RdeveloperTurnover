@@ -22,17 +22,17 @@ load_developers_activity = function() {
     act_months_after$X_id = NULL
     dt_env$act_months_after = act_months_after
 
-    act_months_before = mongo("developer_activity_months_before", db, url, F)$find()
+    act_months_before = mongo("developer_activity_months_before", database_name, url, F)$find()
     act_months_before$releaseDate = as.Date(act_months_before$releaseDate)
     act_months_before$X_id = NULL
     act_months_before = act_months_before
 
-    act_releases = mongo("developer_activity_release", db, url, F)$find()
+    act_releases = mongo("developer_activity_release", database_name, url, F)$find()
     act_releases$releaseDate = as.Date(act_releases$releaseDate)
     act_releases$X_id = NULL
     dt_env$act_releases = act_releases
 
-    mod_m = mongo("modules_metrics", db, url, F)$find()
+    mod_m = mongo("modules_metrics", database_name, url, F)$find()
     #remove modules with 0 LoC
     mod_m = subset(mod_m, LoC > 0)
     mod_m[is.na(mod_m)] = 0
@@ -40,7 +40,7 @@ load_developers_activity = function() {
     mod_m$X_id = NULL
     dt_env$mod_m = mod_m
 
-    commit_dates = mongo("devs_commit_dates", db, url, F)$find()
+    commit_dates = mongo("devs_commit_dates", database_name, url, F)$find()
     commit_dates$time = as.Date(commit_dates$time)
     commit_dates$X_id = NULL
     commit_dates = subset(commit_dates, time > as.Date("2005-01-01"))

@@ -1,5 +1,5 @@
 
-get_modules = function(db_url, file) {
+get_modules = function(db_url, file, community_function=fastgreedy.community) {
   library(mongolite)
 
   commits_files = mongo("commits-files", "developers_activity",paste0("mongodb://", db_url))$find()
@@ -17,7 +17,7 @@ get_modules = function(db_url, file) {
     dimnames(v) <- list(w[, 1], w[,1])
 
     g = graph.adjacency(v,mode="undirected", weighted=TRUE)
-    modules = membership(fastgreedy.community(g))
+    modules = membership(community_function(g))
     modules_regexes = lapply(c(1:max(modules)), function(mod_id) {
       paste0('"', gsub('\\.', '\\\\\\\\.', paste0("^(",paste(names(modules[modules == mod_id]), collapse="|"), ")")), '"')
     })

@@ -47,7 +47,7 @@ compare_dev_sets = function(period_month_size) {
         dices[1,col] = dices[1,col] + 0.00001
       }
     }
-    m = melt(dices)
+    m = suppressMessages(melt(dices))
     ggplot(m, aes(variable, value)) + geom_boxplot() + geom_violin(adjust=.5, scale="width",fill = "grey80") +
       theme_bw() + scale_y_continuous(limits = c(0, 1.1)) + labs(title=main, y="Dice coefficient")
   })

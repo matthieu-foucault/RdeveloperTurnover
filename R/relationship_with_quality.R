@@ -25,6 +25,7 @@ compute_correlations = function() {
   mnames = c("INA","ILA","ENA","ELA","StA", "A")
   compute_cor = function(metr, html=F) {
     do.call(rbind, by(metr, metr$project, function(metrics_p) {
+      if (nrow(metrics_p) < 10) return()
       c(dt_env$projects_names[[metrics_p$project[1]]],lapply(metrics_p[,mnames], function(x){
         cor.string(metrics_p$BugDensity, x)
         }))

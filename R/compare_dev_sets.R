@@ -38,18 +38,25 @@ compare_dev_sets = function(period_month_size) {
     }))
 
     if (period_month_size == 0)
-      main = paste0(dt_env$projects_names[[name_p]], ": |P| = 1 Release")
+      main = paste0(dt_env$projects_names[[name_p]], ": |p| = 1 Release")
     else
-      main = paste0(dt_env$projects_names[[name_p]], ": |P| = ", period_month_size, " Months")
+      main = paste0(dt_env$projects_names[[name_p]], ": |p| = ", period_month_size, " months")
 
     for (col in c("IN","IL","EN","EL")){
-      if (sd(dices[,col]) == 0) {
+      std_dev = sd(dices[,col])
+      if (is.na(std_dev) || std_dev == 0) {
         dices[1,col] = dices[1,col] + 0.00001
       }
     }
     m = suppressMessages(melt(dices))
-    ggplot(m, aes(variable, value)) + geom_boxplot() + geom_violin(adjust=.5, scale="width",fill = "grey80") +
-      theme_bw() + scale_y_continuous(limits = c(0, 1.1)) + labs(title=main, y="Dice coefficient")
+    p = ggplot(m, aes(variable, value)) + geom_boxplot() + geom_violin(adjust=.5, scale="width",fill = "grey80") +
+      theme_bw() + scale_y_continuous(limits = c(0, 1.1)) + labs(title=main, y="Dice coefficient", x="")
+    cairo_pdf(paste0(dt_env$working_dir,"/", dt_env$projects_names[[name_p]],"_devsets_", period_month_size, "months.pdf"),
+              width = 4, height = 4)
+    print(p)
+    dev.off()
+
+    p
   })
 
 }
@@ -58,9 +65,10 @@ compare_dev_sets = function(period_month_size) {
 plot_dev_sets_comparison = function() {
   with(dt_env,{
     svg(paste0(web_working_dir, "/sets_similarity.svg"), height=20, width=20)
-    multiplot(plotlist=c(compare_dev_sets(0),compare_dev_sets(1),compare_dev_sets(3),compare_dev_sets(6)),
-               cols=5)
+    multiplot(plotlist=c(compare_dev_sets(1),compare_dev_sets(3),compare_dev_sets(6)),
+              cols=7)
+    #multiplot(plotlist=c(compare_dev_sets(0),compare_dev_sets(1),compare_dev_sets(3),compare_dev_sets(6)),
+    #           cols=5)
     dev.off()
   })
 }
-

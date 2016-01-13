@@ -1,6 +1,6 @@
 
 dt_env = new.env()
-developer_turnover = function(database_host, database_name, working_dir, web_working_dir = working_dir) {
+developer_ownership = function(database_host, database_name, working_dir, web_working_dir = working_dir) {
   library(reshape2)
   library(ggplot2)
   library(gplots)
@@ -25,6 +25,16 @@ developer_turnover = function(database_host, database_name, working_dir, web_wor
   projects_names[["https://github.com/sebastianbergmann/phpunit.git"]] = "PHPUnit"
   dt_env$projects_names = projects_names
 
+  release_duration = new.env(hash=T, parent=emptyenv())
+  release_duration[["https://github.com/matthieu-foucault/jquery.git"]] = 9
+  release_duration[["https://github.com/rails/rails.git"]] = 6
+  release_duration[["https://github.com/jenkinsci/jenkins.git"]] = 7
+  release_duration[["https://github.com/ansible/ansible.git"]] = 3
+  release_duration[["https://github.com/angular/angular.js.git"]] = 9
+  release_duration[["https://github.com/mono/mono.git"]] = 5
+  release_duration[["https://github.com/sebastianbergmann/phpunit.git"]] = 11
+  dt_env$release_duration = release_duration
+
   S0 = new.env(hash=T, parent=emptyenv())
   S0[["https://github.com/jenkinsci/jenkins.git"]] = "3991cd04fd13aa086c25820bdfaa9460f0810284"
   S0[["https://github.com/rails/rails.git"]] = "73fc42cc0b5e94541480032c2941a50edd4080c2"
@@ -42,13 +52,7 @@ developer_turnover = function(database_host, database_name, working_dir, web_wor
   cat("loading from database... "); flush.console()
   load_developers_activity()
   cat(" DONE\n"); flush.console()
-  cat("plotting turnover evolution... "); flush.console()
-  plot_turnover_evolution()
-  cat("DONE\n"); flush.console()
-  cat("plotting period selection results... "); flush.console()
-  plot_dev_sets_comparison()
-  cat("DONE\n"); flush.console()
   cat("computing metrics and correlation with quality... "); flush.console()
-  compute_correlations()
+  compute_ownership_correlations()
   cat("DONE\n"); flush.console()
 }

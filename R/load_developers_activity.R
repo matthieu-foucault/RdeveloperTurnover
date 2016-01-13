@@ -27,10 +27,10 @@ load_developers_activity = function() {
     act_months_before$X_id = NULL
     act_months_before = act_months_before
 
-    act_releases = mongo("developer_activity_release", database_name, url, F)$find()
-    act_releases$releaseDate = as.Date(act_releases$releaseDate)
-    act_releases$X_id = NULL
-    dt_env$act_releases = act_releases
+#     act_releases = mongo("developer_activity_release", database_name, url, F)$find()
+#     act_releases$releaseDate = as.Date(act_releases$releaseDate)
+#     act_releases$X_id = NULL
+#     dt_env$act_releases = act_releases
 
     mod_m = mongo("modules_metrics", database_name, url, F)$find()
     #remove modules with 0 LoC

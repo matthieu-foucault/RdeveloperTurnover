@@ -59,9 +59,9 @@ turnover_metrics = function(contribs_mod_before, contribs_mod_after, contribs_pr
   ndev_after = ndev(contribs_mod_after)
 
   res = data.frame(module=module, project=contribs_proj_before$project[1],
-#     NumDevsAfter = ndev_after,
-#     NumDevsBefore = ndev_before,
-#     NumDevsMean = mean(c(ndev_before,ndev_after)),
+     NumDevsP2 = ndev_after,
+     NumDevsP1 = ndev_before,
+     NumDevsMean = mean(c(ndev_before,ndev_after)),
 #     EN = ndev(sets$EN),
 #     EL = ndev(sets$EL),
 #     IN = ndev(sets$IN),

@@ -1,15 +1,15 @@
 
-project_turnover = function(commit_dates, t, period_in_days = 182) {
-	devsbefore = unique(subset(commit_dates, time < t & time > (t - period_in_days))$author)
-	devsafter = unique(subset(commit_dates, time > t & time < (t + period_in_days))$author)
+project_turnover = function(commit_dates, t_i, period_in_days = 182) {
+	devsbefore = unique(subset(commit_dates, time < (t_i - period_in_days) & time > (t_i - 2*period_in_days))$author)
+	devsafter = unique(subset(commit_dates, time > (t_i - period_in_days) & time < t_i)$author)
 
 	stayers = intersect(devsbefore,devsafter)
-	all_stayers <<- c(all_stayers, stayers)
-	stayers_leavers <<- c(stayers_leavers, setdiff(all_stayers, stayers))
+	if (exists("all_stayers"))	all_stayers <<- c(all_stayers, stayers)
+	if (exists("stayers_leavers")) stayers_leavers <<- c(stayers_leavers, setdiff(all_stayers, stayers))
 	all = unique(union(devsbefore,devsafter))
 	newcomers = setdiff(devsafter, devsbefore)
 	leavers = setdiff(devsbefore, devsafter)
-	data.frame(time = t + period_in_days, tot = length(all), s = length(stayers), n = length(newcomers), l = length(leavers))
+	data.frame(time = t_i, tot = length(all), s = length(stayers), n = length(newcomers), l = length(leavers))
 }
 
 
@@ -36,8 +36,8 @@ plot_turnover_evolution = function() {
 
 
     s = by(commit_dates, commit_dates$project, function(commit_dates_proj) {
-      first = min(commit_dates_proj$time) + 182
-      last = max(commit_dates_proj$time) - 182
+      first = min(commit_dates_proj$time) + 2*182
+      last = max(commit_dates_proj$time)
       all_stayers = NULL
       stayers_leavers = NULL
       evol = do.call(rbind, lapply(seq(first, last, 15), function(t) {
